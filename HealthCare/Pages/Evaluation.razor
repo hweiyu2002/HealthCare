@@ -1,0 +1,129 @@
+﻿<div class="evaluation-page">
+    <h1>衛教評值</h1>
+    @foreach (var topic in Topics)
+    {
+        <button class="button-margin" @onclick="() => ToggleContent(topic.Key)">@topic.Value</button>
+    }
+
+    <div id="evaluationContent" style="margin-top: 20px;">
+        @if (!string.IsNullOrEmpty(SectionTitle))
+        {
+            <h2>@SectionTitle</h2>
+            <table class="evaluation-table larger-text">
+                <thead>
+                    <tr>
+                        <th>問題</th>
+                        <th>瞭解</th>
+                        <th>瞭解一半</th>
+                        <th>完全不瞭解</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var question in Questions)
+                    {
+                        <tr>
+                            <td style="padding-right: 40px; padding-bottom: 10px;">@question</td>
+                            <td style="padding-bottom: 10px;"><input type="radio" name="@GetRadioName(question, "understand")" value="understand" /></td>
+                            <td style="padding-bottom: 10px;"><input type="radio" name="@GetRadioName(question, "partialUnderstand")" value="partialUnderstand" /></td>
+                            <td style="padding-bottom: 10px;"><input type="radio" name="@GetRadioName(question, "notUnderstand")" value="notUnderstand" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button @onclick="SaveEvaluation" style="margin-top: 20px;">儲存</button>
+        }
+    </div>
+</div>
+
+<script>
+    function toggleContent(isVisible) {
+        var content = document.getElementById("evaluationContent");
+
+        if (isVisible) {
+            content.style.display = "block"; // 显示内容
+        } else {
+            content.style.display = "none"; // 隐藏内容
+        }
+    }
+</script>
+
+
+
+@code {
+    @inject IJSRuntime JSRuntime
+    private string SectionTitle = "";
+    private List<string> Questions = new List<string>();
+    private string currentSection = "";
+    private Dictionary<string, Dictionary<string, string>> selectionState = new Dictionary<string, Dictionary<string, string>>();
+
+
+    private Dictionary<string, string> Topics = new Dictionary<string, string>
+    {
+
+        { "hypertension", "高血壓" },
+        { "diabetes", "糖尿病" },
+        { "fallPrevention", "預防跌倒" }
+    };
+
+   
+
+    private void ToggleContent(string section)
+    {
+        SectionTitle = GetSectionTitle(section);
+        Questions = GetQuestions(section);
+        ShowContent();
+    }
+
+    private string GetSectionTitle(string section)
+    {
+        return Topics.ContainsKey(section) ? Topics[section] + "問題" : "";
+    }
+
+    private List<string> GetQuestions(string section)
+    {
+        return section switch
+        {
+            "hypertension" => new List<string>
+            {
+                "是否知道每日需規律量測血壓及服用藥物",
+                "是否知道血壓應該維持在何範圍",
+                "平時飲食需注意事項（得舒飲食）"
+            },
+            "diabetes" => new List<string>
+            {
+                "是否知道每日需規律服用藥物或是否知道需自我監測血糖",
+                "是否知道血糖應該維持在何範圍",
+                "是否知道低血糖發生時的症狀及處理方法",
+                "是否知道需每年需定期做眼底及足部神經檢查"
+            },
+            "fallPrevention" => new List<string>
+            {
+                "是否知道訓練腿部肌肉力量之方式",
+                "查看個案使用輔具之方式是否正確",
+                "是否知道在家中預防跌倒之措施",
+                "是否知道萬一發生跌倒時該如何處理"
+            },
+            _ => new List<string>()
+        };
+    }
+
+    private string GetRadioName(string question, string level)
+    {
+        return $"{question}_{level}".Replace(" ", "_");
+    }
+
+
+
+    private bool IsContentVisible = false;
+
+    private async Task ShowContent()
+    {
+        IsContentVisible = true;
+        await JSRuntime.InvokeVoidAsync("toggleContent", IsContentVisible);
+    }
+
+    private async Task SaveEvaluation()
+    {
+        Console.WriteLine("已保存");
+    }
+}

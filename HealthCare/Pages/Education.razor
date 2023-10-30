@@ -1,0 +1,76 @@
+﻿@page "/education"
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<div class="education-page">
+    <h1>衛教資訊</h1><br />
+    @foreach (var educationTopic in EducationTopics)
+    {
+        <div class="education-section">
+            <h3>@educationTopic.Title</h3>
+            <ol>
+                @foreach (var line in educationTopic.Content.Split('\n'))
+                {
+                    <li>@line.TrimStart().TrimEnd()</li>
+                }
+            </ol>
+            <button @onclick="() => OpenInNewTab(educationTopic.Url)">衛教單張(@educationTopic.Title)</button>
+        </div>
+        <div style="margin-bottom: 20px;"></div>
+    }
+
+    <div class="checkbox-container">
+        <input type="checkbox" @bind="isEducationCompleted" />
+        <label>已完成此次衛教</label>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <button @onclick="GoToHomePage">回到首頁</button>
+    </div>
+</div>
+<br />
+<br />
+
+@code {
+    private bool isEducationCompleted = false;
+
+    private List<EducationTopic> EducationTopics = new List<EducationTopic>
+    {
+        new EducationTopic
+        {
+            Title = "高血壓",
+            Content = "體重控制：維持理想體重，減輕體重過重所增加之心臟負荷。減少食鹽之攝取\n避免吸菸及過量飲酒\n適度體能活動：每天至少 40 分鐘，每周至少 3~4 天，溫和的有氧運動，例如：快走、慢跑、騎腳踏車等。\n放鬆訓練、降低壓力",
+            Url = "https://www.tph.mohw.gov.tw/?aid=801&pid=46&page_name=detail&iid=1686"
+        },
+
+        new EducationTopic
+        {
+            Title = "糖尿病",
+            Content = "糖尿病治療需飲食、運動及藥物控制，並學習如何自我照顧技巧。\n依專業人員的指導從事適合的運動，並依營養師之建議控制飲食。\n糖尿病藥物治療可分口服抗糖尿病藥物(OAD)、胰島素注射兩大類，醫師會依您個人之身體狀況開具處方，請依照醫囑使用藥物，勿隨意增減。\n飲食、活動或身體狀況改變會影響血糖的高低，血糖過高或過低可能造成昏迷，如有不適情形，請儘速就醫。",
+            Url = "https://www.tph.mohw.gov.tw/?aid=801&pid=46&page_name=detail&iid=1675"
+        },
+        new EducationTopic
+        {
+            Title = "預防跌倒",
+            Content = "下床採漸進式下床，下床前請先坐於床上約3-5分鐘，再下床站立 3-5 分鐘後無暈眩感再活動，或由照顧者攙扶下床活動。\n行動不便者下床活動時需有人陪伴；如急於上廁所，應使用床上便盆或活動便盆椅，勿自行下床。\n睡前請先如廁，減少夜間上廁所次數。\n爬樓梯或如廁時確保環境燈光明亮，照明充足、視野清楚再活動。\n地面避免堆積雜物，以防絆倒；保持地面乾燥，警覺濕滑地面。\n請正確且安全地使用枴杖、助行器、輪椅等輔助器材。",
+            Url = "https://www.tph.mohw.gov.tw/?aid=801&pid=46&page_name=detail&iid=1781"
+        }
+    };
+
+    private async Task OpenInNewTab(string url)
+    {
+        await JSRuntime.InvokeVoidAsync("window.open", url, "_blank");
+    }
+
+    public class EducationTopic
+    {
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string Url { get; set; }
+    }
+
+    private void GoToHomePage()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

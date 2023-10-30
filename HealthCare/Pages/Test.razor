@@ -1,0 +1,43 @@
+﻿@page "/toggle-message"
+<button @onclick="ToggleMessage">衛教資訊</button>
+
+@if (showMessage)
+{
+    <p class="@messageAnimationClass">
+        <br />
+        ★生活型態的調適<br />
+        1、體重控制：維持理想體重，減輕體重過重所增加之心臟負荷。減少
+        食鹽之攝取<br />
+        2、避免吸菸及過量飲酒<br />
+        3、適度體能活動：每天至少 40 分鐘，每周至少 3~4 天，溫和的有氧
+        運動，例如：快走、慢跑、騎腳踏車等。<br />
+        4、放鬆訓練、降低壓力
+    </p>
+}
+
+@code {
+    private bool showMessage = false;
+    private string messageAnimationClass = "";
+
+    private async Task ToggleMessage()
+    {
+        showMessage = !showMessage;
+        messageAnimationClass = showMessage ? "fade-in" : "fade-out";
+
+        // 等待动画时间，然后重置样式类
+        await Task.Delay(1000);
+        messageAnimationClass = "";
+    }
+}
+
+<style>
+    /* 从引入的CSS文件中使用动画 */
+    .fade-in {
+        opacity: 0;
+        animation: fadeInAnimation 1s ease-in forwards;
+    }
+
+    .fade-out {
+        animation: fadeOutAnimation 1s ease-in forwards;
+    }
+</style>
