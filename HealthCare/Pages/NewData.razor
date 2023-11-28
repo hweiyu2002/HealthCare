@@ -1,0 +1,252 @@
+﻿@page "/newdata"
+
+<div class="title-background">
+    <h1 class="title-text">社區照護系統</h1>
+</div>
+<br />
+<h1 class="section-title">新增資料</h1>
+<br />
+<EditForm Model="newPatient" OnValidSubmit="SaveData">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <table class="table">
+        <tr>
+            <td><label for="CaseNumber">病歷號：</label></td>
+            <td>
+                <div>
+                    <InputText id="CaseNumber" @bind-Value="newPatient.CaseNumber" placeholder="Ex：1001" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="Name">姓名：</label></td>
+            <td>
+                <div>
+                    <InputText id="Name" @bind-Value="newPatient.Name" placeholder="輸入姓名" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="Gender">性別：</label></td>
+            <td>
+                <div>
+                    <InputSelect id="Gender" @bind-Value="newPatient.Gender">
+                        <option value="Male">生理男</option>
+                        <option value="Female">生理女</option>
+                        <option value="Other">其他</option>
+                    </InputSelect>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="BirthDate">出生日期：</label></td>
+            <td>
+                <div>
+                    <InputDate id="BirthDate" @bind-Value="newPatient.BirthDate" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="Age">年齡：</label></td>
+            <td><div>@CalculateAge()</div></td>
+        </tr>
+        <tr>
+            <td><label for="Id">身分證：</label></td>
+            <td><div><InputText id="Id" @bind-Value="newPatient.Id" placeholder="Ex：A123456789" /></div></td>
+        </tr>
+        <tr>
+            <td><label for="Phone">手機號碼：</label></td>
+            <td><div><InputText id="Phone" @bind-Value="newPatient.Phone" placeholder="Ex：0912345678" /></div></td>
+        </tr>
+        <tr>
+            <td><label for="Language">語言：</label></td>
+            <td>
+                <div>
+                    <InputSelect id="Language" @bind-Value="newPatient.Language">
+                        <option value="國語">國語</option>
+                        <option value="台語">台語</option>
+                        <option value="客語">客語</option>
+                        <option value="英語">英語</option>
+                        <option value="其他">其他</option>
+                    </InputSelect>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="Address">地址：</label></td>
+            <td>
+                <div class="dropdown">
+                    <select name="county" id="county_box" @bind="newPatient.County">
+                        <option value="">選擇縣市</option>
+                        <option value="基隆市">基隆市</option>
+                        <option value="臺北市">臺北市</option>
+                        <option value="新北市">新北市</option>
+                        <option value="宜蘭縣">宜蘭縣</option>
+                        <option value="新竹市">新竹市</option>
+                        <option value="新竹縣">新竹縣</option>
+                        <option value="桃園市">桃園市</option>
+                        <option value="苗栗縣">苗栗縣</option>
+                        <option value="臺中市">臺中市</option>
+                        <option value="彰化縣">彰化縣</option>
+                        <option value="南投縣">南投縣</option>
+                        <option value="嘉義市">嘉義市</option>
+                        <option value="嘉義縣">嘉義縣</option>
+                        <option value="雲林縣">雲林縣</option>
+                        <option value="臺南市">臺南市</option>
+                        <option value="高雄市">高雄市</option>
+                        <option value="屏東縣">屏東縣</option>
+                        <option value="臺東縣">臺東縣</option>
+                        <option value="花蓮縣">花蓮縣</option>
+                        <option value="金門縣">金門縣</option>
+                        <option value="連江縣">連江縣</option>
+                        <option value="澎湖縣">澎湖縣</option>
+                    </select>
+
+                    <select name="district" id="district_box" @bind="newPatient.District">
+                        <option value="">選擇鄉鎮市區</option>
+                        <option value="東區">東區</option>
+                        <option value="北區">北區</option>
+                        <option value="香山區">香山區</option>
+                    </select>
+
+                    <input type="text" id="Address" @bind="newPatient.Address" placeholder="詳細地址" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="MedicalHistory">病史：</label></td>
+            <td><div><InputText id="MedicalHistory" @bind-Value="newPatient.MedicalHistory" placeholder="輸入過往病史" /></div></td>
+        </tr>
+        <tr>
+            <td><label for="EmergencyContact">緊急聯絡人：</label></td>
+            <td><div><InputText id="EmergencyContact" @bind-Value="newPatient.EmergencyContact" placeholder="輸入緊急聯絡人姓名" /></div></td>
+        </tr>
+        <tr>
+            <td><label for="Relationship">關係：</label></td>
+            <td><div><InputText id="Relationship" @bind-Value="newPatient.Relationship" placeholder="輸入與緊急聯絡人之關係" /></div></td>
+        </tr>
+        <tr>
+            <td><label for="EmergencyPhone">緊急聯絡人電話：</label></td>
+            <td><div><InputText id="EmergencyPhone" @bind-Value="newPatient.EmergencyPhone" placeholder="Ex：0912345678" /></div></td>
+        </tr>
+        <tr>
+            <td><label for="FamilyMember">家人：</label></td>
+            <td><div><InputText id="FamilyMember" @bind-Value="newPatient.FamilyMember" placeholder="輸入父母、子女或伴侶姓名關係" /></div></td>
+        </tr>
+        <tr>
+            <td><label for="Remarks">備註：</label></td>
+            <td><div><InputText id="Remarks" @bind-Value="newPatient.Remarks" /></div></td>
+        </tr>
+    </table>
+    <div>
+        <button type="submit">儲存</button>
+    </div>
+
+
+</EditForm>
+
+
+@code {
+
+    private Patient newPatient = new Patient
+        {
+            BirthDate = DateTime.Today,
+            ClosureDate = DateTime.Today
+        };
+    @inject NavigationManager NavigationManager
+
+    public class Patient
+    {
+        public string CaseNumber { get; set; }
+        public string Name { get; set; }
+        public string Gender { get; set; }
+        public DateTime BirthDate { get; set; }
+        public string Id { get; set; }
+        public string Phone { get; set; }
+        public string Language { get; set; }
+        public string Address { get; set; }
+        public string MedicalHistory { get; set; }
+        public string EmergencyContact { get; set; }
+        public string Relationship { get; set; }
+        public string EmergencyPhone { get; set; }
+        public string FamilyMember { get; set; }
+        public string Remarks { get; set; }
+        public string Closure { get; set; }
+        public DateTime ClosureDate { get; set; } // 新增 ClosureDate 屬性
+        public string County { get; set; }
+        public string District { get; set; }
+    }
+
+    private string CalculateAge()
+    {
+        if (newPatient.BirthDate != DateTime.MinValue)
+        {
+            var today = DateTime.Today;
+            var age = today.Year - newPatient.BirthDate.Year;
+            if (newPatient.BirthDate > today.AddYears(-age)) age--;
+            return age.ToString() + " 歲";
+        }
+        return "";
+    }
+
+    private void SaveData()
+    {
+        NavigationManager.NavigateTo("/list");
+    }
+
+    private bool showClosureReason = false;
+    private string closureReason = "";
+
+    private void Toggle()
+    {
+        showClosureReason = !showClosureReason;
+    }
+}
+
+<style>
+    .title-background {
+        background-color: #4c956a;
+        text-align: center;
+        padding: 30px; /* 調整上下 padding 來增加標題的高度 */
+        margin-bottom: 10px;
+        margin-top: 0;
+    }
+
+    .title-text {
+        color: white;
+        font-weight: bold;
+        font-size: 3em; /* 調整標題字體大小 */
+        padding: 10px; /* 調整內側 padding 來增加框框的大小 */
+    }
+
+    .section-title {
+        font-weight: bold;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table td {
+            border: 1px solid #9fa49f;
+            padding: 8px; /* 根據需要調整內邊距 */
+        }
+
+    table tr td:first-child {
+        background-color: #d5dfd4;
+        color: #000000;
+        font-weight: bold;
+    }
+
+    button[type="submit"] {
+        background-color: #2073ec;
+        color: white;
+        border-radius: 10px;
+        padding: 8px 20px;
+        display: block;
+        margin: 0 auto; /* 將按鈕置中 */
+    }
+
+</style>

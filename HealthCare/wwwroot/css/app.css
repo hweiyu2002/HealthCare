@@ -145,32 +145,6 @@ a, .btn-link {
     }
 }
 
-.larger-text {
-    font-size: 16px; /* 你想要的文字大小 */
-}
-.button-margin {
-    margin-right: 10px; /* 你想要的按鈕間距 */
-}
-
-.evaluation-table {
-    border-collapse: collapse;
-}
-
-    .evaluation-table th, .evaluation-table td {
-        border-bottom: 1px solid black; /* 僅顯示水平線 */
-        vertical-align: middle; /* 垂直置中 */
-    }
-
-.evaluation-page h2 {
-    font-size: 20px;
-}
 
 
-
-
-
-
-
-
-/*施的*/
 
