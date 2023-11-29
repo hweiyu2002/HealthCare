@@ -7,10 +7,10 @@
 <div class="evaluation-page">
     <h1>衛教評值</h1>
     <div style="display: flex; justify-content: center;">
-    @foreach (var topic in Topics)
-    {
-        <button class="button-margin" @onclick="() => ToggleContent(topic.Key)" style="background-color: #226fdf; color: #ffffff; border: 1px solid black; border-radius: 5px;">@topic.Value</button>
-    }
+        @foreach (var topic in Topics)
+        {
+            <button class="button-margin" @onclick="() => ToggleContent(topic.Key)" style="background-color: #226fdf; color: #ffffff; border: 1px solid black; border-radius: 5px;">@topic.Value</button>
+        }
     </div>
 
     <div id="evaluationContent" style="margin-top: 20px;">
@@ -20,10 +20,10 @@
             <table class="evaluation-table larger-text" style="width: 100%; border-collapse: collapse; background-color: #ffffff;">
                 <thead style="background-color: #999393; color: #ffffff;">
                     <tr>
-                        <th style="padding: 10px;">問題</th>
-                        <th style="padding: 10px;">瞭解</th>
-                        <th style="padding: 10px;">瞭解一半</th>
-                        <th style="padding: 10px;">完全不瞭解</th>
+                        <th style="padding: 10px; background-color: #999393;">問題</th>
+                        <th style="padding: 10px; background-color: #999393;">瞭解</th>
+                        <th style="padding: 10px; background-color: #999393;">瞭解一半</th>
+                        <th style="padding: 10px; background-color: #999393;">完全不瞭解</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,7 +39,7 @@
                 </tbody>
             </table>
             <div style="display: flex; justify-content: center;">
-            <button @onclick="SaveEvaluation" style="background-color: #226fdf; color: #ffffff; border: 1px solid black; border-radius: 5px; margin-top: 10px; margin-right :15px;">儲存</button>
+                <button @onclick="SaveEvaluation" style="background-color: #226fdf; color: #ffffff; border: 1px solid black; border-radius: 5px; margin-top: 10px; margin-right :15px;">儲存</button>
                 <button @onclick="PreviousPage" style="background-color: #226fdf; color: #ffffff; border: 1px solid black; border-radius: 5px; margin-top: 10px; ">
                     上一頁
                 </button>
@@ -129,7 +129,7 @@
 
     private void PreviousPage()
     {
-      
-            NavigationManager.NavigateTo("/List");
+
+        NavigationManager.NavigateTo("/List");
     }
 }
